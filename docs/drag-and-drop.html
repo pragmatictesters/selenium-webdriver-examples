@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop Demo for Selenium WebDriver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .draggable {
+            cursor: grab;
+        }
+        .droppable:hover {
+            background-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="max-w-2xl w-full p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4">Drag and Drop Demo</h2>
+        <p class="text-gray-600 mb-4">Drag the item and drop it into the designated area. A message will be displayed on successful drop.</p>
+
+        <!-- Draggable Item -->
+        <div id="dragItem" draggable="true" class="draggable bg-blue-600 text-white p-4 rounded-md mb-4">
+            Drag Me
+        </div>
+
+        <!-- Drop Area -->
+        <div id="dropArea" class="droppable bg-gray-200 p-10 rounded-lg">
+            Drop Here
+        </div>
+
+        <!-- Output Message -->
+        <p id="outputMessage" class="mt-4 text-lg text-gray-800"></p>
+    </div>
+
+    <script>
+        const dragItem = document.getElementById("dragItem");
+        const dropArea = document.getElementById("dropArea");
+        const outputMessage = document.getElementById("outputMessage");
+
+        dragItem.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text", e.target.id);
+            outputMessage.textContent = "Dragging started...";
+        });
+
+        dropArea.addEventListener("dragover", (e) => {
+            e.preventDefault();
+        });
+
+        dropArea.addEventListener("drop", (e) => {
+            e.preventDefault();
+            const data = e.dataTransfer.getData("text");
+            const draggedElement = document.getElementById(data);
+            dropArea.appendChild(draggedElement);
+            outputMessage.textContent = "Item successfully dropped!";
+        });
+    </script>
+</body>
+</html>
