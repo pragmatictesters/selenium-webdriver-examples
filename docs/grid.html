@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tables and Grids</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f2ef;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0a66c2;
+            margin-bottom: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #0a66c2;
+            color: white;
+            cursor: pointer;
+        }
+        tr:hover { background-color: #f1f1f1; }
+        input[type='text'] {
+            width: 100%;
+            padding: 6px;
+            margin: 2px 0;
+        }
+        .pagination {
+            margin-top: 10px;
+        }
+        .page-btn {
+            background-color: #0a66c2;
+            color: white;
+            padding: 6px 12px;
+            margin: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .page-btn:hover {
+            background-color: #004182;
+        }
+    </style>
+    <script>
+        let currentPage = 1;
+        const rowsPerPage = 2;
+
+        function sortTable(n) {
+            const table = document.getElementById("dataTable");
+            let rows = Array.from(table.rows).slice(1);
+            let asc = table.rows[0].cells[n].getAttribute("data-order") !== "asc";
+            rows.sort((a, b) => {
+                let x = a.cells[n].innerText.toLowerCase();
+                let y = b.cells[n].innerText.toLowerCase();
+                return asc ? (x > y ? 1 : -1) : (x < y ? 1 : -1);
+            });
+            table.tBodies[0].append(...rows);
+            table.rows[0].cells[n].setAttribute("data-order", asc ? "asc" : "desc");
+        }
+
+        function editCell(cell) {
+            const oldValue = cell.innerText;
+            const input = document.createElement("input");
+            input.type = "text";
+            input.value = oldValue;
+            input.onblur = () => { cell.innerText = input.value; };
+            cell.innerText = "";
+            cell.appendChild(input);
+            input.focus();
+        }
+
+        function paginate(page) {
+            currentPage = page;
+            const table = document.getElementById("dataTable");
+            const rows = Array.from(table.rows).slice(1);
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            rows.forEach((row, index) => {
+                row.style.display = (index >= start && index < end) ? "" : "none";
+            });
+        }
+
+        function searchTable() {
+            const filter = document.getElementById("search").value.toLowerCase();
+            const table = document.getElementById("dataTable");
+            const rows = Array.from(table.rows).slice(1);
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(filter) ? "" : "none";
+            });
+        }
+
+        window.onload = () => paginate(1);
+    </script>
+</head>
+<body>
+<div class="container mx-auto p-4">
+    <div class="card">
+        <div class="header">Dynamic Tables and Grids with Pagination and Search</div>
+        <input type="text" id="search" onkeyup="searchTable()" placeholder="Search..." class="mb-4 p-2 border rounded">
+        <table id="dataTable">
+            <thead>
+            <tr>
+                <th onclick="sortTable(0)" data-order="desc">Name</th>
+                <th onclick="sortTable(1)" data-order="desc">Age</th>
+                <th onclick="sortTable(2)" data-order="desc">Location</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr><td onclick="editCell(this)">John Doe</td><td onclick="editCell(this)">28</td><td onclick="editCell(this)">New York</td></tr>
+            <tr><td onclick="editCell(this)">Jane Smith</td><td onclick="editCell(this)">32</td><td onclick="editCell(this)">San Francisco</td></tr>
+            <tr><td onclick="editCell(this)">Sam Brown</td><td onclick="editCell(this)">25</td><td onclick="editCell(this)">Chicago</td></tr>
+            <tr><td onclick="editCell(this)">Anna White</td><td onclick="editCell(this)">30</td><td onclick="editCell(this)">Boston</td></tr>
+            <tr><td onclick="editCell(this)">Mark Green</td><td onclick="editCell(this)">40</td><td onclick="editCell(this)">Dallas</td></tr>
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button class="page-btn" onclick="paginate(1)">1</button>
+            <button class="page-btn" onclick="paginate(2)">2</button>
+            <button class="page-btn" onclick="paginate(3)">3</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
