@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Controls Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .message {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="max-w-md w-full p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4">Dynamic Controls Demo</h2>
+
+        <!-- Enable/Disable Input -->
+        <label class="block text-gray-700 mb-2">Input Field:</label>
+        <input type="text" id="dynamicInput" class="w-full px-3 py-2 mb-4 border rounded" placeholder="Type something..." disabled>
+        <button onclick="toggleInput()" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-4">Enable/Disable</button>
+
+        <!-- Add/Remove Elements -->
+        <div id="elementsContainer" class="mb-4">
+            <button onclick="addElement()" class="w-full py-2 bg-green-500 text-white rounded hover:bg-green-600 mb-2">Add Element</button>
+            <button onclick="removeElement()" class="w-full py-2 bg-red-500 text-white rounded hover:bg-red-600">Remove Element</button>
+            <div id="dynamicElements" class="mt-4"></div>
+        </div>
+
+        <p id="message" class="message"></p>
+    </div>
+
+    <script>
+        function toggleInput() {
+            const inputField = document.getElementById("dynamicInput");
+            inputField.disabled = !inputField.disabled;
+            const message = document.getElementById("message");
+            message.textContent = inputField.disabled ? "Input disabled" : "Input enabled";
+        }
+
+        function addElement() {
+            const container = document.getElementById("dynamicElements");
+            const newElement = document.createElement("div");
+            newElement.className = "p-2 bg-gray-200 rounded mb-2";
+            newElement.textContent = "Dynamic Element " + (container.childElementCount + 1);
+            container.appendChild(newElement);
+            const message = document.getElementById("message");
+            message.textContent = "Element added";
+        }
+
+        function removeElement() {
+            const container = document.getElementById("dynamicElements");
+            if (container.lastChild) {
+                container.removeChild(container.lastChild);
+                const message = document.getElementById("message");
+                message.textContent = "Element removed";
+            } else {
+                const message = document.getElementById("message");
+                message.textContent = "No elements to remove";
+            }
+        }
+    </script>
+</body>
+</html>
