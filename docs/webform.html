@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Step Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        .success {
+            color: green;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #0073b1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005f8d;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>Multi-Step Registration Form</h2>
+    <div id="form-steps">
+        <!-- Form steps will be dynamically added here -->
+    </div>
+    <div class="success" id="successMessage" style="display: none;">Registration Successful!</div>
+</div>
+<script>
+    const steps = [
+        { title: 'Personal Information', fields: [
+            { label: 'First Name', type: 'text', id: 'firstName', required: true },
+            { label: 'Last Name', type: 'text', id: 'lastName', required: true },
+            { label: 'Email', type: 'email', id: 'email', required: true },
+            { label: 'Password', type: 'password', id: 'password', required: true }
+        ]},
+        { title: 'Contact Details', fields: [
+            { label: 'Phone Number', type: 'tel', id: 'phone', required: true },
+            { label: 'Address', type: 'text', id: 'address' },
+            { label: 'City', type: 'text', id: 'city' },
+            { label: 'Country', type: 'text', id: 'country' }
+        ]},
+        { title: 'Additional Information', fields: [
+            { label: 'Gender', type: 'radio', id: 'gender', options: ['Male', 'Female'], required: true },
+            { label: 'Subscribe to Newsletter', type: 'checkbox', id: 'newsletter' },
+            { label: 'Bio', type: 'textarea', id: 'bio' }
+        ]}
+    ];
+
+    let currentStep = 0;
+
+    function renderStep(stepIndex) {
+        const formSteps = document.getElementById('form-steps');
+        const step = steps[stepIndex];
+        formSteps.innerHTML = `<div class='form-step active'><h3>${step.title}</h3>` +
+            step.fields.map(field => `
+                <div class='form-group'>
+                    <label for='${field.id}'>${field.label}</label>
+                    ${field.type === 'radio' ? field.options.map(option => `
+                        <label><input type='radio' name='${field.id}' value='${option}'> ${option}</label>`).join('') : ''}
+                    ${field.type === 'checkbox' ? `<input type='checkbox' id='${field.id}'>` : ''}
+                    ${field.type === 'textarea' ? `<textarea id='${field.id}'></textarea>` : ''}
+                    ${!['radio', 'checkbox', 'textarea'].includes(field.type) ? `<input type='${field.type}' id='${field.id}' ${field.required ? 'required' : ''}>` : ''}
+                    <div class='error' id='${field.id}Error'></div>
+                </div>
+            `).join('') + `
+            <div class='form-navigation'>
+                ${stepIndex > 0 ? '<button onclick="previousStep()">Previous</button>' : ''}
+                ${stepIndex < steps.length - 1 ? '<button onclick="nextStep()">Next</button>' : '<button onclick="submitForm()">Submit</button>'}
+            </div>
+        </div>`;
+    }
+
+    function nextStep() {
+        currentStep++;
+        renderStep(currentStep);
+    }
+
+    function previousStep() {
+        currentStep--;
+        renderStep(currentStep);
+    }
+
+    function submitForm() {
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('form-steps').style.display = 'none';
+    }
+
+    renderStep(currentStep);
+</script>
+</body>
+</html>
