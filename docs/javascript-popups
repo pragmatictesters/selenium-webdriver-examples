@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Demo for Selenium WebDriver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="max-w-3xl w-full p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4">Selenium WebDriver JavaScript Demo</h2>
+        <p class="text-gray-600 mb-4">This page demonstrates various JavaScript interactions for Selenium WebDriver testing.</p>
+
+        <!-- Text Input -->
+        <label class="block mb-2">
+            <span class="text-gray-700">Enter your name:</span>
+            <input type="text" id="nameInput" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="John Doe">
+        </label>
+        <button onclick="displayMessage()" class="mt-2 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">Display Message</button>
+
+        <!-- JavaScript Alerts -->
+        <div class="mt-4">
+            <h3 class="text-xl font-semibold">JavaScript Alerts</h3>
+            <button onclick="showAlert()" class="mt-2 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">Show Alert</button>
+            <button onclick="showConfirm()" class="mt-2 bg-yellow-600 text-white py-2 px-4 rounded-md hover:bg-yellow-700">Show Confirmation</button>
+            <button onclick="showPrompt()" class="mt-2 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700">Show Prompt</button>
+        </div>
+
+        <!-- Output Message -->
+        <p id="outputMessage" class="mt-4 text-lg text-gray-800"></p>
+    </div>
+
+    <script>
+        function displayMessage() {
+            const name = document.getElementById("nameInput").value;
+            const output = document.getElementById("outputMessage");
+            output.textContent = name ? `Hello, ${name}! Welcome to the demo.` : "Please enter your name.";
+        }
+
+        function showAlert() {
+            alert("This is a simple alert!");
+            document.getElementById("outputMessage").textContent = "Alert displayed.";
+        }
+
+        function showConfirm() {
+            const result = confirm("Do you confirm this action?");
+            document.getElementById("outputMessage").textContent = result ? "Action confirmed." : "Action canceled.";
+        }
+
+        function showPrompt() {
+            const response = prompt("Please enter your message:", "Sample message");
+            document.getElementById("outputMessage").textContent = response ? `You entered: ${response}` : "No message entered.";
+        }
+    </script>
+</body>
+</html>
