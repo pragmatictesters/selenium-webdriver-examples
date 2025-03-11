@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow DOM Demo for Selenium WebDriver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .shadow-host {
+            margin: 20px;
+            padding: 10px;
+            border: 2px solid #4A5568;
+            border-radius: 8px;
+            background-color: #EDF2F7;
+        }
+        .message {
+            color: #2D3748;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="max-w-lg w-full p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4">Shadow DOM Demo</h2>
+        <p class="text-gray-600 mb-4">This example demonstrates interacting with a Shadow DOM element using Selenium WebDriver.</p>
+        
+        <!-- Shadow Host -->
+        <div id="shadowHost" class="shadow-host"></div>
+
+        <!-- Output Message -->
+        <p id="outputMessage" class="mt-4 text-lg text-gray-800"></p>
+    </div>
+
+    <script>
+        const shadowHost = document.getElementById("shadowHost");
+        const shadowRoot = shadowHost.attachShadow({ mode: "open" });
+        const shadowContent = document.createElement("div");
+        shadowContent.classList.add("message");
+        shadowContent.textContent = "Hello from the Shadow DOM!";
+
+        // Button inside Shadow DOM
+        const button = document.createElement("button");
+        button.textContent = "Click Me";
+        button.style.marginTop = "10px";
+        button.style.padding = "8px 16px";
+        button.style.backgroundColor = "#4299E1";
+        button.style.color = "white";
+        button.style.border = "none";
+        button.style.borderRadius = "4px";
+        button.style.cursor = "pointer";
+
+        button.addEventListener("click", () => {
+            document.getElementById("outputMessage").textContent = "Button inside Shadow DOM clicked!";
+        });
+
+        shadowRoot.appendChild(shadowContent);
+        shadowRoot.appendChild(button);
+    </script>
+</body>
+</html>
