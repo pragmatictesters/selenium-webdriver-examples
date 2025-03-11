@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts and Notifications</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f2ef;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0a66c2;
+            margin-bottom: 16px;
+        }
+        .btn {
+            background-color: #0a66c2;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            margin: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #004182;
+        }
+        .alert {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 4px;
+            color: white;
+        }
+        .success { background-color: #4CAF50; }
+        .warning { background-color: #FF9800; }
+        .error { background-color: #F44336; }
+    </style>
+    <script>
+        function showAlert(type) {
+            let message = '';
+            switch(type) {
+                case 'success': message = 'Operation completed successfully!'; break;
+                case 'warning': message = 'Warning: Check your input.'; break;
+                case 'error': message = 'Error: Something went wrong.'; break;
+            }
+            const alertBox = document.createElement('div');
+            alertBox.className = `alert ${type}`;
+            alertBox.textContent = message;
+            document.getElementById('alert-container').appendChild(alertBox);
+            setTimeout(() => alertBox.remove(), 3000);
+        }
+    </script>
+</head>
+<body>
+<div class="container mx-auto p-4">
+    <div class="card">
+        <div class="header">Alerts and Notifications Example</div>
+        <button class="btn" onclick="showAlert('success')">Show Success Alert</button>
+        <button class="btn" onclick="showAlert('warning')">Show Warning Alert</button>
+        <button class="btn" onclick="showAlert('error')">Show Error Alert</button>
+        <div id="alert-container"></div>
+    </div>
+</div>
+</body>
+</html>
