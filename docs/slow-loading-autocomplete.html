@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slow Loading Autocomplete</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f7f7f7;
+        }
+        .container {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: white;
+          border-radius: 10px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+          color: #0073b1;
+          font-size: 24px;
+          margin-bottom: 20px;
+        }
+        .input-group {
+          position: relative;
+          margin-bottom: 20px;
+        }
+        .autocomplete {
+          width: 100%;
+          padding: 10px;
+          font-size: 16px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+        }
+        .autocomplete-list {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: white;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          max-height: 150px;
+          overflow-y: auto;
+          z-index: 1000;
+        }
+        .autocomplete-list div {
+          padding: 10px;
+          cursor: pointer;
+        }
+        .autocomplete-list div:hover {
+          background-color: #f1f1f1;
+        }
+        .loading {
+          padding: 10px;
+          font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Slow Loading Autocomplete</h1>
+    <div class="input-group">
+        <label for="autocomplete-slow">Country</label>
+        <input type="text" id="autocomplete-slow" class="autocomplete" placeholder="Start typing country name..." oninput="filterCountriesSlow()" />
+        <div id="autocomplete-list-slow" class="autocomplete-list"></div>
+    </div>
+</div>
+
+<script>
+    const countries = ["United States", "Canada", "United Kingdom", "Australia", "India", "Germany", "France", "Italy", "Spain", "Japan"];
+    const autocompleteInputSlow = document.getElementById("autocomplete-slow");
+    const autocompleteListSlow = document.getElementById("autocomplete-list-slow");
+
+    function filterCountriesSlow() {
+      const query = autocompleteInputSlow.value.toLowerCase();
+      autocompleteListSlow.innerHTML = '<div class="loading">Loading...</div>'; // Show loading message
+
+      // Simulate slow loading by adding a delay before showing results
+      setTimeout(() => {
+        autocompleteListSlow.innerHTML = ''; // Clear loading message
+        if (query) {
+          const filteredCountries = countries.filter(country => country.toLowerCase().includes(query));
+          filteredCountries.forEach(country => {
+            const item = document.createElement("div");
+            item.textContent = country;
+            item.onclick = () => {
+              autocompleteInputSlow.value = country;
+              autocompleteListSlow.innerHTML = '';
+            };
+            autocompleteListSlow.appendChild(item);
+          });
+        }
+      }, 2000); // 2 seconds delay
+    }
+</script>
+
+</body>
+</html>
